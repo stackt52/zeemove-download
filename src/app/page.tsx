@@ -1,6 +1,43 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+import { ref, getDownloadURL } from "firebase/storage";
+import { storage } from "@/lib/firebase";
 
 export default function Home() {
+  const [zeemoveUrl, setZeemoveUrl] = useState<string>("#");
+  const [zampostUrl, setZampostUrl] = useState<string>("#");
+
+  useEffect(() => {
+    const fetchUrls = async () => {
+      console.log("Fetching APK URLs...");
+      try {
+        if (!storage.app.options.storageBucket) {
+          console.error("Firebase Storage bucket is not configured. Check your environment variables.");
+          return;
+        }
+
+        const zeemoveRef = ref(storage, "agent_uat_release.apk");
+        const zampostRef = ref(storage, "customer_uat_app.apk");
+
+        const [zeemoveDownloadUrl, zampostDownloadUrl] = await Promise.all([
+          getDownloadURL(zeemoveRef),
+          getDownloadURL(zampostRef),
+        ]);
+
+        console.log("Fetched ZeeMove URL:", zeemoveDownloadUrl);
+        console.log("Fetched Zampost URL:", zampostDownloadUrl);
+
+        setZeemoveUrl(zeemoveDownloadUrl);
+        setZampostUrl(zampostDownloadUrl);
+      } catch (error) {
+        console.error("Error fetching APK download URLs:", error);
+      }
+    };
+
+    fetchUrls();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-zinc-950 dark:text-zinc-100 font-sans">
       <div className="fixed inset-0 z-0 w-full h-full bg-center bg-cover opacity-60" style={{ backgroundImage: "url('images/bg.jpg')" }}></div>
@@ -64,7 +101,7 @@ export default function Home() {
                   </ul>
                 </div>
                 <a
-                  href="/apps/zeemove-rider.apk"
+                  href={zeemoveUrl}
                   className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-blue-600 text-white font-semibold transition-all hover:bg-blue-700 active:scale-95"
                 >
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -98,7 +135,7 @@ export default function Home() {
                   </ul>
                 </div>
                 <a
-                  href="/apps/zampost-express.apk"
+                  href={zampostUrl}
                   className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-orange-600 text-white font-semibold transition-all hover:bg-orange-700 active:scale-95"
                 >
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">

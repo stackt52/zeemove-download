@@ -61,10 +61,10 @@ export default function Home() {
         <section className="relative overflow-hidden py-20 lg:py-32">
           <div className="mx-auto max-w-7xl px-6">
             <div className="flex flex-col items-center text-center">
-              <h1 className="max-w-4xl text-4xl font-extrabold tracking-tight sm:text-6xl">
+              <h1 className="max-w-4xl text-4xl text-gray-800 font-extrabold tracking-tight sm:text-6xl">
                 The Future of Logistics and <span className="text-blue-600">Mobility</span>
               </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600 dark:text-zinc-400">
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600 ">
                 Download our official apps to start riding or sending parcels with ease. 
                 Reliable, fast, and built for your convenience.
               </p>

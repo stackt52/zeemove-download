@@ -7,10 +7,11 @@ import { storage } from "@/lib/firebase";
 export default function Home() {
   const [zeemoveUrl, setZeemoveUrl] = useState<string>("#");
   const [zampostUrl, setZampostUrl] = useState<string>("#");
+  const [faqUrl, setFaqUrl] = useState<string>("#");
 
   useEffect(() => {
     const fetchUrls = async () => {
-      console.log("Fetching APK URLs...");
+      console.log("Fetching APK and FAQ URLs...");
       try {
         if (!storage.app.options.storageBucket) {
           console.error("Firebase Storage bucket is not configured. Check your environment variables.");
@@ -19,17 +20,21 @@ export default function Home() {
 
         const zeemoveRef = ref(storage, "agent_uat_release.apk");
         const zampostRef = ref(storage, "customer_uat_app.apk");
+        const faqRef = ref(storage, "Zampost-FAQ.pdf");
 
-        const [zeemoveDownloadUrl, zampostDownloadUrl] = await Promise.all([
+        const [zeemoveDownloadUrl, zampostDownloadUrl, faqDownloadUrl] = await Promise.all([
           getDownloadURL(zeemoveRef),
           getDownloadURL(zampostRef),
+          getDownloadURL(faqRef),
         ]);
 
         console.log("Fetched ZeeMove URL:", zeemoveDownloadUrl);
         console.log("Fetched Zampost URL:", zampostDownloadUrl);
+        console.log("Fetched FAQ URL:", faqDownloadUrl);
 
         setZeemoveUrl(zeemoveDownloadUrl);
         setZampostUrl(zampostDownloadUrl);
+        setFaqUrl(faqDownloadUrl);
       } catch (error) {
         console.error("Error fetching APK download URLs:", error);
       }
@@ -49,9 +54,14 @@ export default function Home() {
             <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">Z</div>
             <span className="text-xl font-bold tracking-tight">ZeeMove</span>
           </div>
-          <div className="hidden space-x-8 md:flex">
-            <a href="#zeemove" className="text-sm font-medium hover:text-blue-600 transition-colors">ZeeMove Rider</a>
-            <a href="#zampost" className="text-sm font-medium hover:text-blue-600 transition-colors">Zampost Express</a>
+          <div className=" md:block ">
+          </div>
+          <div className="space-x-8 md:flex">
+            <a href={faqUrl} className=" text-sm font-medium hover:text-blue-600 transition-colors" style={{marginTop: 3, textAlign: 'right'}}>FAQ</a>
+            <div className="hidden md:block space-x-8">
+              <a href="#zeemove" className="text-sm font-medium hover:text-blue-600 transition-colors">ZeeMove Rider</a>
+              <a href="#zampost" className="text-sm font-medium hover:text-blue-600 transition-colors">Zampost Express</a>
+            </div>
           </div>
         </div>
       </nav>

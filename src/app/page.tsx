@@ -54,8 +54,7 @@ export default function Home() {
             <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">Z</div>
             <span className="text-xl font-bold tracking-tight">ZeeMove</span>
           </div>
-          <div className=" md:block ">
-          </div>
+
           <div className="space-x-8 md:flex">
             <a href={faqUrl} className=" text-sm font-medium hover:text-blue-600 transition-colors" style={{marginTop: 3, textAlign: 'right'}}>FAQ</a>
             <div className="hidden md:block space-x-8">
